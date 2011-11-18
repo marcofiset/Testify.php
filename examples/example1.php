@@ -5,7 +5,7 @@
  * 
  */
 
-require 'testify/testify.class.php';
+require '../testify/testify.class.php';
 
 $tf = new Testify("A basic test suite.");
 

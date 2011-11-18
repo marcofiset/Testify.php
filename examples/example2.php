@@ -1,11 +1,11 @@
 <?php
 
 /*
- * A more complex example using before / after and data
+ * A more complex example using beforeEach and data
  * 
  */
 
-require 'testify/testify.class.php';
+require '../testify/testify.class.php';
 
 $tf = new Testify("A bit more advanced test suite");
 

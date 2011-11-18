@@ -16,6 +16,8 @@ $tf->beforeEach(function($tf){
 });
 
 $tf->test("Testing the add() method", function($tf){
+	$calc = $tf->data->calc;
+	
 	$calc->add(4);
 	$tf->assert($calc->result() == 14);
 
@@ -24,6 +26,8 @@ $tf->test("Testing the add() method", function($tf){
 });
 
 $tf->test("Testing the mul() method", function($tf){
+	$calc = $tf->data->calc;
+	
 	$calc->mul(1.5);
 	$tf->assertEqual($calc->result(),15);
 

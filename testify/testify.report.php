@@ -13,12 +13,22 @@
 			html{
 				background-color: #fafafa;
 				overflow-x:hidden;
+				height:100%;
 			}
-        	
+			
         	body{
         		font:13px/1.5 Tahoma, Arial, sans-serif;
         		text-align:center;
         		color:#5a5a5a;
+        		height:100%;
+        	}
+        	
+        	#wrapper{
+        		min-height:100%;
+        	}
+        	
+        	#content{
+        		padding-bottom:46px;
         	}
         	
         	h1,h2{
@@ -70,6 +80,8 @@
         	span.result{ color: #DCDCDC;display: block;padding: 0.6em; }
         	.green{color:#94c25d;}
         	.red{ color:#fb4357;}
+        	
+        	
         	
         	ul{
         		list-style:none;
@@ -126,6 +138,9 @@
 				font-size: 10px;
 				padding: 15px;
 				display:block;
+				height:15px;
+				margin-top:-46px;
+				position:relative;
         	}
         	
         	a,a:visited{
@@ -160,43 +175,51 @@
     </head>
     
     <body>
-		<h1 class="<?php echo $result = ($suiteResults['fail'] == 0 ? 'pass' : 'fail') ?>">
-			<?php echo $title?>
-		</h1>
-		
-		<div class="message <?php echo $result?>">
-			<span class="green">Far out! Everything passed!</span>
-			<span class="red">Bummer! You have failing tests!</span>
-		</div>
-		
-		<?php
-		foreach($cases as $caseTitle => $case){ ?>
-			
-			<h2 class="<?php echo $case['fail'] == 0 ? 'pass' : 'fail' ?>">
-				<?php echo $caseTitle?>
-				<span class="result">
-					<span class="green"><?php echo $case['pass']?></span>/<span class="red"><?php echo $case['fail']?></span>
-				</span>
-			</h2>	
-			
-			<ul class="tests">
+    	
+    	<div id="wrapper">
+    	
+    		<div id="content">
+	    		<h1 class="<?php echo $result = ($suiteResults['fail'] == 0 ? 'pass' : 'fail') ?>">
+					<?php echo $title?>
+				</h1>
+				
+				<div class="message <?php echo $result?>">
+					<span class="green">Far out! Everything passed!</span>
+					<span class="red">Bummer! You have failing tests!</span>
+				</div>
+				
 				<?php
-				foreach ($case['tests'] as $test){ ?>
+				foreach($cases as $caseTitle => $case){ ?>
 					
-					<li>
-						<span class="type <?php echo $test['result']?>"><?php echo $test['type']?>()</span>
-						<span class="line">line <?php echo $test['line']?></span>
-						<span class="file"><?php echo $test['file']?></span>
-						<div class="source"><?php echo htmlspecialchars($test['source'])?></div>
-					</li>
+					<h2 class="<?php echo $case['fail'] == 0 ? 'pass' : 'fail' ?>">
+						<?php echo $caseTitle?>
+						<span class="result">
+							<span class="green"><?php echo $case['pass']?></span>/<span class="red"><?php echo $case['fail']?></span>
+						</span>
+					</h2>	
 					
-				<?php } ?>
-			
-			</ul>
-			
-  		<?php } ?>
-  		
-        <footer> Powered by <a href="http://tutorialzine.com/testify/">Testify</a> framework</footer>
+					<ul class="tests">
+						<?php
+						foreach ($case['tests'] as $test){ ?>
+							
+							<li>
+								<span class="type <?php echo $test['result']?>"><?php echo $test['type']?>()</span>
+								<span class="line">line <?php echo $test['line']?></span>
+								<span class="file"><?php echo $test['file']?></span>
+								<div class="source"><?php echo htmlspecialchars($test['source'])?></div>
+							</li>
+							
+						<?php } ?>
+					
+					</ul>
+					
+		  		<?php } ?>
+		  		
+		  	</div>
+		  		
+	  	</div>
+	  	
+        <footer> Powered by <a href="http://tutorialzine.com/projects/testify/">Testify</a> framework</footer>
         
     </body>
 </html>

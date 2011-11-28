@@ -12,11 +12,11 @@ include "MyCalc.php";
 $tf = new Testify("MyCalc Test Suite");
 
 $tf->beforeEach(function($tf){
-	$tf->data->calc = new MyCalc(10);
+	$tf["calc"] = new MyCalc(10);
 });
 
 $tf->test("Testing the add() method", function($tf){
-	$calc = $tf->data->calc;
+	$calc = $tf["calc"];
 	
 	$calc->add(4);
 	$tf->assert($calc->result() == 14);
@@ -26,7 +26,7 @@ $tf->test("Testing the add() method", function($tf){
 });
 
 $tf->test("Testing the mul() method", function($tf){
-	$calc = $tf->data->calc;
+	$calc = $tf["calc"];
 	
 	$calc->mul(1.5);
 	$tf->assertEqual($calc->result(),15);

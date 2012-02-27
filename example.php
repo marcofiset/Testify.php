@@ -1,13 +1,9 @@
-Testify.php - a micro unit testing framework
-============================================
+<?php
 
-Testify makes writing unit tests fun again. It has an elegant syntax and keeps things simple.
-
-You can use camelCase or underscore_based test names and assertions. Write tests like you're speaking!
-
-Here is an example for a test suite with two test cases:
-
-```php
+/*
+ * This is a minimal example of Testify
+ *
+ */
 require 'Testify.php';
 
 $tf = new Testify("A Basic Test Suite");
@@ -38,12 +34,20 @@ $tf->iHaveA_BadFeelingAboutThisOne(function($tf){
 
 });
 
+$tf->methodChaining_test_withException(function($tf)
+{
+	$tf->isStillUp($stillUp = TRUE)
+		->is_ok(TRUE)
+		->isBorn_inTheUSA('USA' == 'UK');
+
+	throw new Exception('This is unexpected!');
+});
+
+
 $tf->run();
 
 if(PHP_SAPI == 'cli')
 	$tf->CLIReport();
 else
 	$tf->HTMLReport();
-```
 
-For full documentation and a getting started guide, visit the [Testify homepage](http://tutorialzine.com/projects/testify/).

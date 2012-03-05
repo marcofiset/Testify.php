@@ -57,7 +57,6 @@ class Testify
 	 * The total results of the test suite
 	 *
 	 * @var    array
-	 * @var type
 	 */
 	private $suiteResults = array(
 		'pass' => 0,
@@ -95,7 +94,7 @@ class Testify
 	/**
 	 * A public object for storing state and other variables across test cases and method calls.
 	 *
-	 * @var stdClass
+	 * @var   stdClass
 	 */
 	public $data;
 
@@ -188,7 +187,7 @@ class Testify
 	 * @param    Closure          An anonymous callback function
 	 * @return   void             No value is returned
 	 */
-	public function beforeEach($callback)
+	public function beforeEach(Closure $callback)
 	{
 		$this->beforeEach = $callback;
 	}
@@ -199,7 +198,7 @@ class Testify
 	 * @param    Closure          An anonymous callback function
 	 * @return   void             No value is returned
 	 */
-	public function afterEach($callback)
+	public function afterEach(Closure $callback)
 	{
 		$this->afterEach = $callback;
 	}

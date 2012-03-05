@@ -282,7 +282,7 @@ class Testify
 	 */
 	public function report()
 	{
-		if(PHP_SAPI == 'cli')
+		if(PHP_SAPI == 'cli' or defined('STDOUT'))
 		{
 			return $this->reportCli();
 		}

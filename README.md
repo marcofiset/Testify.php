@@ -10,7 +10,7 @@ Here is an example for a test suite with two test cases:
 
 ```php
 <?php
-require 'Testify.php';
+require __DIR__.'/src/Testify.php';
 
 $tf = new Testify("A Basic Test Suite");
 

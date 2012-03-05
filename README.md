@@ -9,6 +9,7 @@ like you're speaking!
 Here is an example for a test suite with two test cases:
 
 ```php
+<?php
 require 'Testify.php';
 
 $tf = new Testify("A Basic Test Suite");

@@ -1,0 +1,10 @@
+{
+    "name":"elfet/testify",
+    "type":"library",
+    "require":{
+        "php":">=5.3.0"
+    },
+    "autoload":{
+        "classmap":["testify/testify.class.php"]
+    }
+}

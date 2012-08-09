@@ -1,5 +1,5 @@
 {
-    "name":"Elfet/Testify.php",
+    "name":"elfet/testify",
     "type":"library",
     "require":{
         "php":">=5.3.0"

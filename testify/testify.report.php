@@ -86,7 +86,7 @@
         	ul{
         		list-style:none;
         		font-size:19px;
-        		width: 430px;
+        		width: 800px;
         		margin: 10px auto 80px;
         	}
         	
@@ -116,7 +116,7 @@
         	
         	li span.type{
         		display:inline-block;
-        		width:200px;
+        		width:600px;
         	}
         	
         	div.message{
@@ -203,7 +203,11 @@
 						foreach ($case['tests'] as $test){ ?>
 							
 							<li>
-								<span class="type <?php echo $test['result']?>"><?php echo $test['type']?>()</span>
+								<span class="type <?php echo $test['result']?>">
+                                    <?php 
+                                        echo $test['name'] === '' ? $test['type'].'()' : $test['name'];
+                                    ?>
+                                </span>
 								<span class="line">line <?php echo $test['line']?></span>
 								<span class="file"><?php echo $test['file']?></span>
 								<div class="source"><?php echo htmlspecialchars($test['source'])?></div>
@@ -219,7 +223,7 @@
 		  		
 	  	</div>
 	  	
-        <footer> Powered by <a href="http://tutorialzine.com/projects/testify/">Testify</a> framework</footer>
+        <footer> Powered by <a href="http://tutorialzine.com/projects/testify/" target="_blank">Testify</a> framework</footer>
         
     </body>
 </html>

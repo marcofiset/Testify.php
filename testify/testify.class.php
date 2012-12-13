@@ -237,7 +237,7 @@ class Testify{
 	}
 	
 	/**
-	 * Generates a pretty HTML5 report of the test suite status. Called implicitly by {@see run}
+	 * Generates a pretty CLI or HTML5 report of the test suite status. Called implicitly by {@see run}
 	 *
 	 * @return $this
 	 */
@@ -246,8 +246,12 @@ class Testify{
 		$title = $this->suiteTitle;
 		$suiteResults = $this->suiteResults;
 		$cases = $this->stack;
-		
-		include dirname(__FILE__).'/testify.report.php';
+
+		if(php_sapi_name() === 'cli') {
+			include dirname(__FILE__).'/testify.report.cli.php';
+		} else {
+			include dirname(__FILE__).'/testify.report.php';
+		}
 		
 		return $this;
 	}
@@ -324,5 +328,3 @@ class Testify{
  */
 
 class TestifyException extends Exception{}
-
-?>

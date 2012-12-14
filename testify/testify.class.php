@@ -154,8 +154,8 @@ class Testify{
 	 * @return boolean
 	 */
 	
-	public function assert($arg){
-		return $this->recordTest($arg == true);
+	public function assert($arg, $test_name = ''){
+		return $this->recordTest($arg == true, $test_name);
 	}
 	
 	/**
@@ -165,8 +165,8 @@ class Testify{
 	 * @return boolean
 	 */
 	
-	public function assertFalse($arg){
-		return $this->recordTest($arg == false);
+	public function assertFalse($arg, $test_name = ''){
+		return $this->recordTest($arg == false, $test_name);
 	}
 	
 	/**
@@ -177,8 +177,8 @@ class Testify{
 	 * @return boolean
 	 */
 	
-	public function assertEqual($arg1,$arg2){
-		return $this->recordTest($arg1 == $arg2);
+	public function assertEqual($arg1,$arg2, $test_name = ''){
+		return $this->recordTest($arg1 == $arg2, $test_name);
 	}
 	
 	/**
@@ -189,8 +189,8 @@ class Testify{
 	 * @return boolean
 	 */
 	
-	public function assertIdentical($arg1,$arg2){
-		return $this->recordTest($arg1 === $arg2);
+	public function assertIdentical($arg1,$arg2, $test_name = ''){
+		return $this->recordTest($arg1 === $arg2, $test_name);
 	}
 	
 	/**
@@ -201,8 +201,8 @@ class Testify{
 	 * @return boolean
 	 */
 	
-	public function assertInArray($arg, Array $arr){
-		return $this->recordTest( in_array($arg, $arr));
+	public function assertInArray($arg, Array $arr, $test_name = ''){
+		return $this->recordTest( in_array($arg, $arr), $test_name);
 	}
 	
 	/**
@@ -213,8 +213,8 @@ class Testify{
 	 * @return boolean
 	 */
 	
-	public function assertNotInArray($arg, Array $arr){
-		return $this->recordTest( !in_array($arg, $arr));
+	public function assertNotInArray($arg, Array $arr, $test_name = ''){
+		return $this->recordTest( !in_array($arg, $arr), $test_name);
 	}
 	
 	/**
@@ -263,7 +263,7 @@ class Testify{
 	 * @return boolean
 	 */
 	
-	private function recordTest($pass){
+	private function recordTest($pass, $test_name = ''){
 		
 		if(	!array_key_exists($this->currentTestCase, $this->stack) ||
 			!is_array($this->stack[$this->currentTestCase])){
@@ -279,6 +279,7 @@ class Testify{
 		
 		$result = $pass ? "pass" : "fail";
 		$this->stack[$this->currentTestCase]['tests'][] = array(
+			"name" => $test_name,
 			"type"		=> $bt[1]['function'],
 			"result"	=> $result,
 			"line"		=> $bt[1]['line'],

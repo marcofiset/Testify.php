@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Testify.php by marco-fiset</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Testify.php</h1>
+        <p>A micro unit testing framework</p>
+
+        <p class="view"><a href="https://github.com/marco-fiset/Testify.php">View the Project on GitHub <small>marco-fiset/Testify.php</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/marco-fiset/Testify.php/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/marco-fiset/Testify.php/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/marco-fiset/Testify.php">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>Testify.php - a micro unit testing framework</h1>
+
+<p>Testify makes writing unit tests fun again. It has an elegant syntax and keeps things simple.</p>
+
+<p>Here is an example for a test suite with two test cases:</p>
+
+<div class="highlight"><pre><span class="k">include</span> <span class="s2">"testify/testify.class.php"</span><span class="p">;</span>
+<span class="k">include</span> <span class="s2">"MyCalc.php"</span><span class="p">;</span>
+
+<span class="nv">$tf</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Testify</span><span class="p">(</span><span class="s2">"MyCalc Test Suite"</span><span class="p">);</span>
+
+<span class="nv">$tf</span><span class="o">-&gt;</span><span class="na">beforeEach</span><span class="p">(</span><span class="k">function</span><span class="p">(</span><span class="nv">$tf</span><span class="p">){</span>
+    <span class="nv">$tf</span><span class="o">-&gt;</span><span class="na">data</span><span class="o">-&gt;</span><span class="na">calc</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyCalc</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nv">$tf</span><span class="o">-&gt;</span><span class="na">test</span><span class="p">(</span><span class="s2">"Testing the add() method"</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$tf</span><span class="p">){</span>
+    <span class="nv">$calc</span> <span class="o">=</span> <span class="nv">$tf</span><span class="o">-&gt;</span><span class="na">data</span><span class="o">-&gt;</span><span class="na">calc</span><span class="p">;</span>
+
+    <span class="nv">$calc</span><span class="o">-&gt;</span><span class="na">add</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+    <span class="nv">$tf</span><span class="o">-&gt;</span><span class="na">assert</span><span class="p">(</span><span class="nv">$calc</span><span class="o">-&gt;</span><span class="na">result</span><span class="p">()</span> <span class="o">==</span> <span class="mi">14</span><span class="p">);</span>
+
+    <span class="nv">$calc</span><span class="o">-&gt;</span><span class="na">add</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">);</span>
+    <span class="nv">$tf</span><span class="o">-&gt;</span><span class="na">assertEqual</span><span class="p">(</span><span class="nv">$calc</span><span class="o">-&gt;</span><span class="na">result</span><span class="p">(),</span><span class="mi">9</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nv">$tf</span><span class="o">-&gt;</span><span class="na">test</span><span class="p">(</span><span class="s2">"Testing the mul() method"</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$tf</span><span class="p">){</span>
+    <span class="nv">$calc</span> <span class="o">=</span> <span class="nv">$tf</span><span class="o">-&gt;</span><span class="na">data</span><span class="o">-&gt;</span><span class="na">calc</span><span class="p">;</span>
+
+    <span class="nv">$calc</span><span class="o">-&gt;</span><span class="na">mul</span><span class="p">(</span><span class="mf">1.5</span><span class="p">);</span>
+    <span class="nv">$tf</span><span class="o">-&gt;</span><span class="na">assertEqual</span><span class="p">(</span><span class="nv">$calc</span><span class="o">-&gt;</span><span class="na">result</span><span class="p">(),</span><span class="mi">15</span><span class="p">);</span>
+
+    <span class="nv">$calc</span><span class="o">-&gt;</span><span class="na">mul</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+    <span class="nv">$tf</span><span class="o">-&gt;</span><span class="na">assertEqual</span><span class="p">(</span><span class="nv">$calc</span><span class="o">-&gt;</span><span class="na">result</span><span class="p">(),</span><span class="o">-</span><span class="mi">15</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nv">$tf</span><span class="o">-&gt;</span><span class="na">run</span><span class="p">();</span>
+</pre></div>
+
+<p>For full documentation and a getting started guide, visit the <a href="http://tutorialzine.com/projects/testify/">Testify homepage</a>. </p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/marco-fiset">marco-fiset</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>

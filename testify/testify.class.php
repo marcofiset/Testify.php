@@ -5,14 +5,14 @@
  *
  * This is the main class of the framework. Use it like this:
  * 
- * @version		0.3
+ * @version		0.4
  * @author		Martin Angelov
  * @link		http://tutorialzine.com/testify/
  * @throws		TestifyException
  * @license		GPL
  */
 
-class Testify{
+class Testify implements ArrayAccess {
 	
 	private $tests = array();
 	private $stack = array();
@@ -26,10 +26,13 @@ class Testify{
 	private $beforeEach = NULL;
 	private $afterEach = NULL;
 	
+	private $storedData = array();
+	
 	/**
 	 * A public object for storing state and other variables across test cases and method calls.
 	 * 
 	 * @var stdClass
+	 * @deprecated
 	 */
 	
 	public $data = NULL;
@@ -255,6 +258,54 @@ class Testify{
 		
 		return $this;
 	}
+	
+	/**
+	 * Stores a variable across test cases and method calls
+	 *
+	 * @param string $offset The identifier
+	 * @param mixed $value The value
+	 */
+	
+	public function offsetSet($offset, $value) {
+		if ($offset === NULL) {
+			$this->storedData[] = $value;
+		} else {
+            $this->storedData[$offset] = $value;
+        }
+    }
+    
+    /**
+     * Returns a stored variable
+     *
+     * @param string $offset The identifier
+     * @return mixed The value or NULL if not defined
+     */
+    
+    public function offsetGet($offset) {
+        return isset($this->storedData[$offset]) ? $this->storedData[$offset] : NULL;
+    }
+    
+    /**
+     * Returns if a variable with the identifier $offset exists
+     *
+     * @param string $offset
+     * @return boolean
+     */
+    
+    public function offsetExists($offset) {
+        return isset($this->container[$offset]);
+    }
+    
+    /**
+     * Unsets the variable with the identifier $offset
+     *
+     * @param string $offset
+     */
+    
+    public function offsetUnset($offset) {
+        unset($this->container[$offset]);
+    }
+
 	
 	/**
 	 * A helper method for recording the results of the assertions in the internal stack.

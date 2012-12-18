@@ -13,15 +13,15 @@ $tf = new Testify("A bit more advanced test suite");
 
 $tf->beforeEach(function($tf){
 	
-	// Use the data property to share variables across tests
+	// Use $tf like an array to share variables across tests
 	
-	$tf->data->arr = array('a','b','c','d','e','f');
+	$tf["arr"] = array('a','b','c','d','e','f');
 	
 });
 
 $tf->test("Testing Array Pop", function($tf){
 
-	$arr = &$tf->data->arr;
+	$arr = $tf["arr"];
 	
 	$tf->assertEqual(array_pop($arr),'f');
 	$tf->assertEqual(array_pop($arr),'e');
@@ -34,7 +34,7 @@ $tf->test("Testing In Array", function($tf){
 
 	// beforeEach has restored the array
 
-	$arr = &$tf->data->arr;
+	$arr = $tf["arr"];
 	
 	$tf->assertInArray('a',$arr);
 	$tf->assertInArray('b',$arr);

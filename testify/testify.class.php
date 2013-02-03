@@ -7,14 +7,15 @@
  * 
  * @version		0.3
  * @author		Martin Angelov
- * @link		http://tutorialzine.com/testify/
+ * @author     Marc-Olivier Fiset
+ * @link		   marco
  * @throws		TestifyException
  * @license		GPL
  */
 
-class Testify{
-	
-	private $tests = array();
+class Testify
+{	
+ 	private $tests = array();
 	private $stack = array();
 	private $fileCache = array();
 	private $currentTestCase;
@@ -31,7 +32,6 @@ class Testify{
 	 * 
 	 * @var stdClass
 	 */
-	
 	public $data = NULL;
 
 	/**
@@ -39,11 +39,11 @@ class Testify{
 	 * 
 	 * @param string $title The suite title
 	 */
-	
-	public function __construct($title){
+	public function __construct($title)
+  {
 		$this->suiteTitle = $title;
 		$this->data = new stdClass;
-		$this->suiteResults = array('pass'=>0, 'fail'=>0);
+		$this->suiteResults = array('pass' => 0, 'fail' => 0);
 	}
 	
 	/**
@@ -53,16 +53,16 @@ class Testify{
 	 * @param function $testCase The test case as an anonymous function 
 	 * @return $this
 	 */
-	
-	public function test($name, $testCase = NULL){
-		if(is_callable($name)){
+	public function test($name, $testCase = NULL)
+  {
+		if (is_callable($name)) {
 			$testCase = $name;
-			$name = "Test Case #".(count($this->tests)+1);
+			$name = "Test Case #" . (count($this->tests) + 1);
 		}
 		
 		$this->affirmCallable($testCase,"test");
 		
-		$this->tests[] = array("name"=>$name,"testCase"=>$testCase);
+		$this->tests[] = array("name" => $name,"testCase" => $testCase);
 		return $this;
 	}
 	
@@ -71,8 +71,8 @@ class Testify{
 	 * 
 	 * @param function $callback An anonymous callback function
 	 */
-	
-	public function before($callback){
+	public function before($callback)
+  {
 		$this->affirmCallable($callback,"before");
 		$this->before = $callback;
 	}
@@ -82,8 +82,8 @@ class Testify{
 	 * 
 	 * @param function $callback An anonymous callback function
 	 */
-
-	public function after($callback){
+	public function after($callback)
+  {
 		$this->affirmCallable($callback,"after");
 		$this->after = $callback;
 	}
@@ -93,8 +93,8 @@ class Testify{
 	 * 
 	 * @param function $callback An anonymous callback function
 	 */
-	
-	public function beforeEach($callback){
+	public function beforeEach($callback)
+  {
 		$this->affirmCallable($callback,"beforeEach");
 		$this->beforeEach = $callback;
 	}
@@ -104,8 +104,8 @@ class Testify{
 	 * 
 	 * @param function $callback An anonymous callback function
 	 */
-
-	public function afterEach($callback){
+	public function afterEach($callback)
+  {
 		$this->affirmCallable($callback,"afterEach");
 		$this->afterEach = $callback;
 	}
@@ -115,30 +115,30 @@ class Testify{
 	 * 
 	 * @return $this
 	 */
-	
-	public function run(){
+	public function run()
+  {
 		$arr = array($this);
 		
-		if(is_callable($this->before)){
+		if (is_callable($this->before)) {
 			call_user_func_array($this->before, $arr);
 		}
 		
-		foreach($this->tests as $test){
+		foreach($this->tests as $test) {
 			$this->currentTestCase = $test['name'];
 			
-			if(is_callable($this->beforeEach)){
+			if (is_callable($this->beforeEach)) {
 				call_user_func_array($this->beforeEach, $arr);
 			}
 			
 			// Executing the testcase
 			call_user_func_array($test['testCase'], $arr);
 			
-			if(is_callable($this->afterEach)){
+			if (is_callable($this->afterEach)) {
 				call_user_func_array($this->afterEach, $arr);
 			}
 		}
 		
-		if(is_callable($this->after)){
+		if (is_callable($this->after)) {
 			call_user_func_array($this->after, $arr);
 		}
 		
@@ -153,8 +153,8 @@ class Testify{
 	 * @param boolean $arg The result of a boolean expression.
 	 * @return boolean
 	 */
-	
-	public function assert($arg, $test_name = ''){
+	public function assert($arg, $test_name = '')
+  {
 		return $this->recordTest($arg == true, $test_name);
 	}
 	
@@ -164,8 +164,8 @@ class Testify{
 	 * @param boolean $arg The result of a boolean expression.
 	 * @return boolean
 	 */
-	
-	public function assertFalse($arg, $test_name = ''){
+	public function assertFalse($arg, $test_name = '')
+  {
 		return $this->recordTest($arg == false, $test_name);
 	}
 	
@@ -176,8 +176,8 @@ class Testify{
 	 * @param mixed $arg2
 	 * @return boolean
 	 */
-	
-	public function assertEqual($arg1,$arg2, $test_name = ''){
+	public function assertEqual($arg1,$arg2, $test_name = '')
+  {
 		return $this->recordTest($arg1 == $arg2, $test_name);
 	}
 	
@@ -189,7 +189,8 @@ class Testify{
 	 * @return boolean
 	 */
 	
-	public function assertIdentical($arg1,$arg2, $test_name = ''){
+	public function assertIdentical($arg1,$arg2, $test_name = '')
+  {
 		return $this->recordTest($arg1 === $arg2, $test_name);
 	}
 	
@@ -200,8 +201,8 @@ class Testify{
 	 * @param array $arr
 	 * @return boolean
 	 */
-	
-	public function assertInArray($arg, Array $arr, $test_name = ''){
+	public function assertInArray($arg, Array $arr, $test_name = '')
+  {
 		return $this->recordTest( in_array($arg, $arr), $test_name);
 	}
 	
@@ -212,8 +213,8 @@ class Testify{
 	 * @param array $arr
 	 * @return boolean
 	 */
-	
-	public function assertNotInArray($arg, Array $arr, $test_name = ''){
+	public function assertNotInArray($arg, Array $arr, $test_name = '')
+  {
 		return $this->recordTest( !in_array($arg, $arr), $test_name);
 	}
 	
@@ -221,8 +222,8 @@ class Testify{
 	 * Unconditional pass 
 	 * 
 	 */
-	
-	public function pass(){
+	public function pass()
+  {
 		return $this->recordTest(true);
 	}
 	
@@ -230,8 +231,8 @@ class Testify{
 	 * Unconditional fail 
 	 * 
 	 */
-		
-	public function fail(){
+	public function fail()
+  {
 		// This check fails every time
 		return $this->recordTest(false);
 	}
@@ -241,13 +242,13 @@ class Testify{
 	 *
 	 * @return $this
 	 */
-	
-	public function report(){
+	public function report()
+  {
 		$title = $this->suiteTitle;
 		$suiteResults = $this->suiteResults;
 		$cases = $this->stack;
 
-		if(php_sapi_name() === 'cli') {
+		if (php_sapi_name() === 'cli') {
 			include dirname(__FILE__).'/testify.report.cli.php';
 		} else {
 			include dirname(__FILE__).'/testify.report.php';
@@ -262,11 +263,10 @@ class Testify{
 	 * @param boolean $pass If equals true, the test has passed, otherwise failed.
 	 * @return boolean
 	 */
-	
-	private function recordTest($pass, $test_name = ''){
-		
-		if(	!array_key_exists($this->currentTestCase, $this->stack) ||
-			!is_array($this->stack[$this->currentTestCase])){
+	private function recordTest($pass, $test_name = '')
+  {
+		if (!array_key_exists($this->currentTestCase, $this->stack) ||
+			  !is_array($this->stack[$this->currentTestCase])) {
 			
 			$this->stack[$this->currentTestCase]['tests'] = array();
 			$this->stack[$this->currentTestCase]['pass'] = 0;
@@ -274,12 +274,12 @@ class Testify{
 		}
 		
 		$bt = debug_backtrace();
-		$source = $this->getFileLine($bt[1]['file'],$bt[1]['line']-1);
+		$source = $this->getFileLine($bt[1]['file'],$bt[1]['line'] - 1);
 		$bt[1]['file'] = basename($bt[1]['file']);
 		
 		$result = $pass ? "pass" : "fail";
 		$this->stack[$this->currentTestCase]['tests'][] = array(
-			"name" => $test_name,
+			"name"    => $test_name,
 			"type"		=> $bt[1]['function'],
 			"result"	=> $result,
 			"line"		=> $bt[1]['line'],
@@ -300,9 +300,9 @@ class Testify{
 	 * @param number $line The line number to return
 	 * @return string
 	 */
-	
-	private function getFileLine($file, $line){
-		if(!array_key_exists($file,$this->fileCache)){
+	private function getFileLine($file, $line)
+  {
+		if (!array_key_exists($file,$this->fileCache)) {
 			$this->fileCache[$file] = file($file);
 		}
 		
@@ -315,9 +315,9 @@ class Testify{
 	 * @param mixed $func The variable to check
 	 * @param string $name Used for the error message text to indicate the name of the parent context.
 	 */
-	
-	private function affirmCallable(&$func,$name){
-		if(!is_callable($func)){
+	private function affirmCallable(&$func,$name)
+  {
+		if (!is_callable($func)) {
 			throw new TestifyException("$name(): Please pass a valid callback function!");
 		}
 	}
@@ -327,5 +327,7 @@ class Testify{
  * TestifyException class
  * 
  */
+class TestifyException extends Exception
+{
 
-class TestifyException extends Exception{}
+}

@@ -7,9 +7,10 @@ namespace Testify;
  *
  * This is the main class of the framework. Use it like this:
  *
- * @version    0.3.1
+ * @version    0.4
  * @author     Martin Angelov
  * @author     Marc-Olivier Fiset
+ * @author     Fabien Salathe
  * @link       marco
  * @throws     TestifyException
  * @license    GPL
@@ -32,19 +33,19 @@ class Testify
     /**
      * A public object for storing state and other variables across test cases and method calls.
      *
-     * @var stdClass
+     * @var \StdClass
      */
     public $data = null;
 
     /**
-     * The constructor
+     * The constructor.
      *
      * @param string $title The suite title
      */
     public function __construct($title)
     {
         $this->suiteTitle = $title;
-        $this->data = new \stdClass;
+        $this->data = new \StdClass;
         $this->suiteResults = array('pass' => 0, 'fail' => 0);
     }
 
@@ -52,7 +53,8 @@ class Testify
      * Add a test case.
      *
      * @param string $name Title of the test case
-     * @param function $testCase The test case as an anonymous function
+     * @param \function $testCase (optional) The test case as a callback
+     *
      * @return $this
      */
     public function test($name, \Closure $testCase = null)
@@ -62,53 +64,53 @@ class Testify
             $name = "Test Case #" . (count($this->tests) + 1);
         }
 
-        $this->affirmCallable($testCase,"test");
+        $this->affirmCallable($testCase, "test");
 
-        $this->tests[] = array("name" => $name,"testCase" => $testCase);
+        $this->tests[] = array("name" => $name, "testCase" => $testCase);
         return $this;
     }
 
     /**
      * Executed once before the test cases are run.
      *
-     * @param function $callback An anonymous callback function
+     * @param \function $callback An anonymous callback function
      */
     public function before(\Closure $callback)
     {
-        $this->affirmCallable($callback,"before");
+        $this->affirmCallable($callback, "before");
         $this->before = $callback;
     }
 
     /**
      * Executed once after the test cases are run.
      *
-     * @param function $callback An anonymous callback function
+     * @param \function $callback An anonymous callback function
      */
     public function after(\Closure $callback)
     {
-        $this->affirmCallable($callback,"after");
+        $this->affirmCallable($callback, "after");
         $this->after = $callback;
     }
 
     /**
      * Executed for every test case, before it is run.
      *
-     * @param function $callback An anonymous callback function
+     * @param \function $callback An anonymous callback function
      */
     public function beforeEach(\Closure $callback)
     {
-        $this->affirmCallable($callback,"beforeEach");
+        $this->affirmCallable($callback, "beforeEach");
         $this->beforeEach = $callback;
     }
 
     /**
      * Executed for every test case, after it is run.
      *
-     * @param function $callback An anonymous callback function
+     * @param \function $callback An anonymous callback function
      */
     public function afterEach(\Closure $callback)
     {
-        $this->affirmCallable($callback,"afterEach");
+        $this->affirmCallable($callback, "afterEach");
         $this->afterEach = $callback;
     }
 
@@ -150,97 +152,156 @@ class Testify
     }
 
     /**
-     * Passes if given a truthfull expression
+     * Alias for {@see assertTrue} method.
      *
-     * @param boolean $arg The result of a boolean expression.
+     * @param boolean $arg The result of a boolean expression
+     * @param string $message (optional) Custom message. SHOULD be specified for easier debugging
+     * @see Testify->assertTrue()
+     *
      * @return boolean
      */
-    public function assert($arg, $test_name = '')
+    public function assert($arg, $message = '')
     {
-        return $this->recordTest($arg == true, $test_name);
+        return $this->assertTrue($arg, $message);
     }
 
     /**
-     * Passes if given a falsy expression
+     * Passes if given a truthfull expression.
      *
-     * @param boolean $arg The result of a boolean expression.
+     * @param boolean $arg The result of a boolean expression
+     * @param string $message (optional) Custom message. SHOULD be specified for easier debugging
+     *
      * @return boolean
      */
-    public function assertFalse($arg, $test_name = '')
+    public function assertTrue($arg, $message = '')
     {
-        return $this->recordTest($arg == false, $test_name);
+        return $this->recordTest($arg == true, $message);
     }
 
     /**
-     * Passes if $arg1 == $arg2
+     * Passes if given a falsy expression.
+     *
+     * @param boolean $arg The result of a boolean expression
+     * @param string $message (optional) Custom message. SHOULD be specified for easier debugging
+     *
+     * @return boolean
+     */
+    public function assertFalse($arg, $message = '')
+    {
+        return $this->recordTest($arg == false, $message);
+    }
+
+    /**
+     * Passes if $arg1 == $arg2.
      *
      * @param mixed $arg1
      * @param mixed $arg2
+     * @param string $message (optional) Custom message. SHOULD be specified for easier debugging
+     *
      * @return boolean
      */
-    public function assertEqual($arg1, $arg2, $test_name = '')
+    public function assertEquals($arg1, $arg2, $message = '')
     {
-        return $this->recordTest($arg1 == $arg2, $test_name);
+        return $this->recordTest($arg1 == $arg2, $message);
     }
 
     /**
-     * Passes if $arg1 === $arg2
+     * Passes if $arg1 != $arg2.
      *
      * @param mixed $arg1
      * @param mixed $arg2
+     * @param string $message (optional) Custom message. SHOULD be specified for easier debugging
+     *
      * @return boolean
      */
-
-    public function assertIdentical($arg1, $arg2, $test_name = '')
+    public function assertNotEquals($arg1, $arg2, $message = '')
     {
-        return $this->recordTest($arg1 === $arg2, $test_name);
+        return $this->recordTest($arg1 != $arg2, $message);
     }
 
     /**
-     * Passes if $arg is an element of $arr
+     * Passes if $arg1 === $arg2.
+     *
+     * @param mixed $arg1
+     * @param mixed $arg2
+     * @param string $message (optional) Custom message. SHOULD be specified for easier debugging
+     *
+     * @return boolean
+     */
+    public function assertSame($arg1, $arg2, $message = '')
+    {
+        return $this->recordTest($arg1 === $arg2, $message);
+    }
+
+    /**
+     * Passes if $arg1 !== $arg2.
+     *
+     * @param mixed $arg1
+     * @param mixed $arg2
+     * @param string $message (optional) Custom message. SHOULD be specified for easier debugging
+     *
+     * @return boolean
+     */
+    public function assertNotSame($arg1, $arg2, $message = '')
+    {
+        return $this->recordTest($arg1 !== $arg2, $message);
+    }
+
+    /**
+     * Passes if $arg is an element of $arr.
      *
      * @param mixed $arg
      * @param array $arr
+     * @param string $message (optional) Custom message. SHOULD be specified for easier debugging
+     *
      * @return boolean
      */
-    public function assertInArray($arg, Array $arr, $test_name = '')
+    public function assertInArray($arg, Array $arr, $message = '')
     {
-        return $this->recordTest( in_array($arg, $arr), $test_name);
+        return $this->recordTest(in_array($arg, $arr), $message);
     }
 
     /**
-     * Passes if $arg is not an element of $arr
+     * Passes if $arg is not an element of $arr.
      *
      * @param mixed $arg
      * @param array $arr
+     * @param string $message (optional) Custom message. SHOULD be specified for easier debugging
+     *
      * @return boolean
      */
-    public function assertNotInArray($arg, Array $arr, $test_name = '')
+    public function assertNotInArray($arg, Array $arr, $message = '')
     {
-        return $this->recordTest( !in_array($arg, $arr), $test_name);
+        return $this->recordTest(!in_array($arg, $arr), $message);
     }
 
     /**
-     * Unconditional pass
+     * Unconditional pass.
      *
+     * @param string $message (optional) Custom message. SHOULD be specified for easier debugging
+     *
+     * @return boolean
      */
-    public function pass()
+    public function pass($message = '')
     {
-        return $this->recordTest(true);
+        return $this->recordTest(true, $message);
     }
 
     /**
-     * Unconditional fail
+     * Unconditional fail.
      *
+     * @param string $message (optional) Custom message. SHOULD be specified for easier debugging
+     *
+     * @return boolean
      */
-    public function fail()
+    public function fail($message = '')
     {
         // This check fails every time
-        return $this->recordTest(false);
+        return $this->recordTest(false, $message);
     }
 
     /**
-     * Generates a pretty CLI or HTML5 report of the test suite status. Called implicitly by {@see run}
+     * Generates a pretty CLI or HTML5 report of the test suite status. Called implicitly by {@see run}.
      *
      * @return $this
      */
@@ -262,10 +323,12 @@ class Testify
     /**
      * A helper method for recording the results of the assertions in the internal stack.
      *
-     * @param boolean $pass If equals true, the test has passed, otherwise failed.
+     * @param boolean $pass If equals true, the test has passed, otherwise failed
+     * @param string $message (optional) Custom message
+     *
      * @return boolean
      */
-    private function recordTest($pass, $test_name = '')
+    private function recordTest($pass, $message = '')
     {
         if (!array_key_exists($this->currentTestCase, $this->stack) ||
               !is_array($this->stack[$this->currentTestCase])) {
@@ -276,12 +339,12 @@ class Testify
         }
 
         $bt = debug_backtrace();
-        $source = $this->getFileLine($bt[1]['file'],$bt[1]['line'] - 1);
+        $source = $this->getFileLine($bt[1]['file'], $bt[1]['line'] - 1);
         $bt[1]['file'] = basename($bt[1]['file']);
 
         $result = $pass ? "pass" : "fail";
         $this->stack[$this->currentTestCase]['tests'][] = array(
-            "name"      => $test_name,
+            "name"      => $message,
             "type"      => $bt[1]['function'],
             "result"    => $result,
             "line"      => $bt[1]['line'],
@@ -299,12 +362,13 @@ class Testify
      * Internal method for fetching a specific line of a text file. With caching.
      *
      * @param string $file The file name
-     * @param number $line The line number to return
+     * @param integer $line The line number to return
+     *
      * @return string
      */
     private function getFileLine($file, $line)
     {
-        if (!array_key_exists($file,$this->fileCache)) {
+        if (!array_key_exists($file, $this->fileCache)) {
             $this->fileCache[$file] = file($file);
         }
 
@@ -314,20 +378,52 @@ class Testify
     /**
      * Internal helper method for determine whether a variable is callable as a function.
      *
-     * @param mixed $func The variable to check
-     * @param string $name Used for the error message text to indicate the name of the parent context.
+     * @param mixed $callback The variable to check
+     * @param string $name Used for the error message text to indicate the name of the parent context
+     * @throws TestifyException if callback argument is not a function
      */
-    private function affirmCallable(&$func, $name)
+    private function affirmCallable(&$callback, $name)
     {
-        if (!is_callable($func)) {
-            throw new TestifyException("$name(): Please pass a valid callback function!");
+        if (!is_callable($callback)) {
+            throw new TestifyException("$name(): is not a valid callback function!");
         }
     }
 
     /**
-     * Alias for "run()" method
+     * Alias for {@see assertEquals}.
      *
-     * @see Testify::run()
+     * @deprecated Not recommended, use {@see assertEquals}
+     * @param mixed $arg1
+     * @param mixed $arg2
+     * @param string $message (optional) Custom message. SHOULD be specified for easier debugging
+     *
+     * @return boolean
+     */
+    public function assertEqual($arg1, $arg2, $message = '')
+    {
+        return $this->assertEquals($arg1, $arg2, $message);
+    }
+
+    /**
+     * Alias for {@see assertSame}.
+     *
+     * @deprecated Not recommended, use {@see assertSame}
+     * @param mixed $arg1
+     * @param mixed $arg2
+     * @param string $message (optional) Custom message. SHOULD be specified for easier debugging
+     *
+     * @return boolean
+     */
+    public function assertIdentical($arg1, $arg2, $message = '')
+    {
+        return $this->recordTest($arg1 === $arg2, $message);
+    }
+
+    /**
+     * Alias for {@see run} method.
+     *
+     * @see Testify->run()
+     *
      * @return $this
      */
     public function __invoke()

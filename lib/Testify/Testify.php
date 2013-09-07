@@ -3,7 +3,7 @@
 namespace Testify;
 
 /**
- * Testify.php - a micro unit testing framework
+ * Testify - a micro unit testing framework
  *
  * This is the main class of the framework. Use it like this:
  *
@@ -24,17 +24,17 @@ class Testify
     private $suiteTitle;
     private $suiteResults;
 
-    private $before = NULL;
-    private $after = NULL;
-    private $beforeEach = NULL;
-    private $afterEach = NULL;
+    private $before = null;
+    private $after = null;
+    private $beforeEach = null;
+    private $afterEach = null;
 
     /**
      * A public object for storing state and other variables across test cases and method calls.
      *
      * @var stdClass
      */
-    public $data = NULL;
+    public $data = null;
 
     /**
      * The constructor
@@ -55,7 +55,7 @@ class Testify
      * @param function $testCase The test case as an anonymous function
      * @return $this
      */
-    public function test($name, $testCase = NULL)
+    public function test($name, \Closure $testCase = null)
     {
         if (is_callable($name)) {
             $testCase = $name;
@@ -73,7 +73,7 @@ class Testify
      *
      * @param function $callback An anonymous callback function
      */
-    public function before($callback)
+    public function before(\Closure $callback)
     {
         $this->affirmCallable($callback,"before");
         $this->before = $callback;
@@ -84,7 +84,7 @@ class Testify
      *
      * @param function $callback An anonymous callback function
      */
-    public function after($callback)
+    public function after(\Closure $callback)
     {
         $this->affirmCallable($callback,"after");
         $this->after = $callback;
@@ -95,7 +95,7 @@ class Testify
      *
      * @param function $callback An anonymous callback function
      */
-    public function beforeEach($callback)
+    public function beforeEach(\Closure $callback)
     {
         $this->affirmCallable($callback,"beforeEach");
         $this->beforeEach = $callback;
@@ -106,7 +106,7 @@ class Testify
      *
      * @param function $callback An anonymous callback function
      */
-    public function afterEach($callback)
+    public function afterEach(\Closure $callback)
     {
         $this->affirmCallable($callback,"afterEach");
         $this->afterEach = $callback;
@@ -178,7 +178,7 @@ class Testify
      * @param mixed $arg2
      * @return boolean
      */
-    public function assertEqual($arg1,$arg2, $test_name = '')
+    public function assertEqual($arg1, $arg2, $test_name = '')
     {
         return $this->recordTest($arg1 == $arg2, $test_name);
     }
@@ -191,7 +191,7 @@ class Testify
      * @return boolean
      */
 
-    public function assertIdentical($arg1,$arg2, $test_name = '')
+    public function assertIdentical($arg1, $arg2, $test_name = '')
     {
         return $this->recordTest($arg1 === $arg2, $test_name);
     }
@@ -317,7 +317,7 @@ class Testify
      * @param mixed $func The variable to check
      * @param string $name Used for the error message text to indicate the name of the parent context.
      */
-    private function affirmCallable(&$func,$name)
+    private function affirmCallable(&$func, $name)
     {
         if (!is_callable($func)) {
             throw new TestifyException("$name(): Please pass a valid callback function!");
@@ -340,7 +340,7 @@ class Testify
  * TestifyException class
  *
  */
-class Exception extends \Exception
+class TestifyException extends \Exception
 {
 
 }

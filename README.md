@@ -1,12 +1,12 @@
 Testify - a micro unit testing framework
 ========================================
-
 Testify makes writing unit tests fun again. It has an elegant syntax and keeps things simple.
+
 
 Requirements
 ------------
-PHP 5.3+ is required
-[Composer](http://getcomposer.org/) to install Testify is recommended (but you can do this manually)
+* PHP 5.3+ is required
+* [Composer](http://getcomposer.org/) to install Testify is recommended (but you can do this manually)
 
 
 Usage

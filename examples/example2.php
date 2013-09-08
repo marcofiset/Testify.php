@@ -25,10 +25,10 @@ $tf->test("Testing Array Pop", function($tf) {
 
 	$arr = &$tf->data->arr;
 
-	$tf->assertEqual(array_pop($arr),'f');
-	$tf->assertEqual(array_pop($arr),'e');
-	$tf->assertEqual(array_pop($arr),'d');
-	$tf->assertEqual(array_pop($arr),'c');
+	$tf->assertEquals(array_pop($arr),'f');
+	$tf->assertEquals(array_pop($arr),'e');
+	$tf->assertEquals(array_pop($arr),'d');
+	$tf->assertEquals(array_pop($arr),'c');
 
 });
 
@@ -50,4 +50,4 @@ $tf->test("Testing In Array", function($tf) {
 # It is even possible to include additional files with tests:
 include 'subtest.php';
 
-$tf->run();
+$tf();

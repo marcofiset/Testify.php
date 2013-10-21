@@ -7,7 +7,7 @@ namespace Testify;
  *
  * This is the main class of the framework. Use it like this:
  *
- * @version    0.4
+ * @version    0.4.1
  * @author     Martin Angelov
  * @author     Marc-Olivier Fiset
  * @author     Fabien Salathe
@@ -16,8 +16,8 @@ namespace Testify;
  * @license    GPL
  */
 
-class Testify
-{
+class Testify {
+
     private $tests = array();
     private $stack = array();
     private $fileCache = array();
@@ -256,7 +256,7 @@ class Testify
      *
      * @return boolean
      */
-    public function assertInArray($arg, Array $arr, $message = '')
+    public function assertInArray($arg, array $arr, $message = '')
     {
         return $this->recordTest(in_array($arg, $arr), $message);
     }
@@ -270,7 +270,7 @@ class Testify
      *
      * @return boolean
      */
-    public function assertNotInArray($arg, Array $arr, $message = '')
+    public function assertNotInArray($arg, array $arr, $message = '')
     {
         return $this->recordTest(!in_array($arg, $arr), $message);
     }
@@ -312,9 +312,9 @@ class Testify
         $cases = $this->stack;
 
         if (php_sapi_name() === 'cli') {
-            include dirname(__FILE__).'/testify.report.cli.php';
+            include dirname(__FILE__) . '/testify.report.cli.php';
         } else {
-            include dirname(__FILE__).'/testify.report.php';
+            include dirname(__FILE__) . '/testify.report.html.php';
         }
 
         return $this;

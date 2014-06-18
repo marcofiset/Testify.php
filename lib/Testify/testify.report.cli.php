@@ -25,5 +25,5 @@ percent($suiteResults)."% success\n";
 
 function percent($suiteResults) {
 	$sum = $suiteResults['pass'] + $suiteResults['fail'];
-	return round($suiteResults['pass'] * 100 / $sum, 2);
+	return round($suiteResults['pass'] * 100 / max($sum, 1), 2);
 }

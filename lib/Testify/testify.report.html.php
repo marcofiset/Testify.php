@@ -1,8 +1,10 @@
-<!DOCTYPE html>
+<?php
+require 'helpers.php';
+?><!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<title>(<?php echo $suiteResults['pass'], '/', $suiteResults['fail']?>) <?php echo $title?> · Testify Suite</title>
+		<title>(<?php echo $suiteResults['pass'], '|', $suiteResults['fail']?>) <?php echo $title?> · Testify Suite</title>
 
 		<style>
 			* {
@@ -25,10 +27,6 @@
 
 			#wrapper {
 				min-height: 100%;
-			}
-
-			#content {
-				padding-bottom: 46px;
 			}
 
 			h1, h2 {
@@ -124,7 +122,7 @@
 
 			div.message {
 				font-size: 22px;
-				font-family: 'PT Sans Narrow',sans-serif;
+				font-family: 'PT Sans Narrow', sans-serif;
 				padding: 0 40px 50px;
 			}
 
@@ -134,15 +132,14 @@
 			}
 
 			footer {
-				background-color: #FFFFFF;
-				border-top: 1px solid #DDDDDD;
-				box-shadow: 0 0 3px #DDDDDD;
-				color: #888888;
+				background-color: #fff;
+				border-top: 1px solid #ddd;
+				box-shadow: 0 0 3px #ddd;
+				color: #888;
 				font-size: 10px;
 				padding: 15px;
 				display: block;
 				height: 15px;
-				margin-top: -46px;
 				position: relative;
 			}
 
@@ -188,11 +185,11 @@
 
 				<div class="message <?php echo $result?>">
 					<span class="green">Far out! Everything passed!</span>
-					<span class="red">Bummer! You have failing tests!</span>
+					<span class="red">Bummer! You have failing tests! [pass <?php echo percent($suiteResults)?>%]</span>
 				</div>
 
 				<?php
-				foreach($cases as $caseTitle => $case){ ?>
+				foreach($cases as $caseTitle => $case) { ?>
 
 					<h2 class="<?php echo $case['fail'] == 0 ? 'pass' : 'fail' ?>">
 						<?php echo $caseTitle?>
@@ -203,7 +200,7 @@
 
 					<ul class="tests">
 						<?php
-						foreach ($case['tests'] as $test){ ?>
+						foreach($case['tests'] as $test) { ?>
 
 							<li>
 								<span class="type <?php echo $test['result']?>">

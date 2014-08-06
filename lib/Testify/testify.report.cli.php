@@ -1,4 +1,6 @@
 <?php
+require 'helpers.php';
+
 $result = $suiteResults['fail'] === 0 ? 'pass' : 'fail';
 
 echo
@@ -22,8 +24,3 @@ echo
 str_repeat('=', 80)."\n",
 "Tests: [$result], {pass {$suiteResults['pass']} / fail {$suiteResults['fail']}}, ",
 percent($suiteResults)."% success\n";
-
-function percent($suiteResults) {
-	$sum = $suiteResults['pass'] + $suiteResults['fail'];
-	return round($suiteResults['pass'] * 100 / $sum, 2);
-}

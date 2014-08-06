@@ -18,9 +18,7 @@ $tf->test("Some tests", function($tf)
 
 $tf->test(function($tf)
 {
-    $tf->assert(true);
-    $tf->assertFalse(!true);
-    $tf->assertEquals(1337, '1337');
+    $tf->assert(true, "Always true !");
     $tf->assertSame(1024, pow(2, 10));
     $tf->assertNotSame(new stdClass, new stdClass, "Not the same classes !");
 });
